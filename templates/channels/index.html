@@ -1,10 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'channels/base.html' %}
 
-</body>
-</html>
+{% block title %}yt_check :: Главная{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h1>Главная</h1>
+
+    <!-- Форма добавления канала -->
+    <form method="post" action="{% url 'index' %}">
+      {% csrf_token %}
+      <div class="mb-3 d-flex align-items-center">
+        <label for="id_pseudonym" class="col-form-label mb-0">Введите псевдоним канала:</label>
+        <div class="ms-2">
+          {{ form.pseudonym }}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Отправить</button>
+      <a href="{% url 'index' %}" class="btn btn-secondary ms-2">Сброс</a>
+      
+      <!-- Кнопка "Проверить статус стрима" -->
+      <button type="submit" class="btn btn-info ms-2" formaction="{% url 'check_stream_status' %}" name="check_status">Проверить статус стрима</button>
+    </form>
+
+    <div class="mt-4">
+      {% if messages %}
+        <div class="mb-4">
+          {% for message in messages %}
+            {% if message.tags == 'error' %}
+              <div class="alert alert-danger" role="alert">
+                {{ message }}
+              </div>
+            {% elif message.tags == 'warning' %}
+              <div class="alert alert-warning" role="alert">
+                {{ message }}
+              </div>
+            {% elif message.tags == 'success' %}
+              <div class="alert alert-success" role="alert">
+                {{ message }}
+              </div>
+            {% else %}
+              <div class="alert alert-info" role="alert">
+                {{ message }}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,10 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'channels/base.html' %}
 
-</body>
-</html>
+{% block title %}yt_check :: Список каналов{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h1 class="mb-4">Список каналов</h1>
+    <table class="table table-bordered table-striped">
+      <thead class="table-light">
+        <tr>
+          <th>Псевдоним канала</th>
+          <th>Имя канала</th>
+          <th>Ссылка</th>
+          <!-- Новый столбец "В эфире?" -->
+          <th>В эфире?</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for channel in channels %}
+        <tr>
+          <td>{{ channel.pseudonym }}</td>
+          <td>{{ channel.name }}</td>
+          <td><a href="{{ channel.url }}" target="_blank">{{ channel.url }}</a></td>
+          <!-- Новый столбец для статуса -->
+          <td>
+            {% if channel.is_live %}
+              <span class="text-success">Да</span>
+            {% else %}
+              <span class="text-danger">Нет</span>
+            {% endif %}
+          </td>
+          <td>
+            <form method="POST" action="{% url 'delete_channel' channel.id %}" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
