@@ -6,6 +6,7 @@ services:
     command: uv run manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
+      - /app/.venv
     ports:
       - "8000:8000"
     depends_on:
@@ -25,6 +26,7 @@ services:
     command: uv run celery -A yt_check worker --loglevel=info
     volumes:
       - .:/app
+      - /app/.venv
     depends_on:
       - redis
     environment:
@@ -37,6 +39,7 @@ services:
     command: uv run celery -A yt_check beat --loglevel=info
     volumes:
       - .:/app
+      - /app/.venv
     depends_on:
       - redis
     environment:
