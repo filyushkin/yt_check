@@ -41,4 +41,16 @@
       </tbody>
     </table>
   </div>
+    <script>
+        function autoReloadPage() {
+            // Устанавливаем интервал в 60 000 миллисекунд (1 минута)
+            setInterval(function() {
+                // Перезагружаем текущую страницу
+                location.reload();
+            }, 60000);
+        }
+
+        // Запускаем функцию при загрузке страницы
+        window.onload = autoReloadPage;
+    </script>
 {% endblock %}
