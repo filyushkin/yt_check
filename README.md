@@ -6,7 +6,7 @@
 
 ## 2. Запуск Celery (первый терминал IDE):
 
-`celery -A yt_check worker --pool=solo --loglevel=info`
+`celery -A yt_check worker --loglevel=info --pool=solo`
 
 ## 3. Запуск Celery Beat (второй терминал IDE):
 
