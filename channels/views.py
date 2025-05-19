@@ -87,9 +87,8 @@ def check_stream_status(request):
 
 # Остальные представления
 def channels_list(request):
-    channels = Channel.objects.all()
+    channels = Channel.objects.all().order_by('name')  # Можно добавить сортировку
     return render(request, 'channels/channels_list.html', {'channels': channels})
-    # return render(request, 'channels_list.html', {'channels': channels})
 
 def delete_channel(request, channel_id):
     if request.method == 'POST':
