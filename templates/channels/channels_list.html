@@ -13,6 +13,7 @@
           <th>Ссылка</th>
           <!-- Новый столбец "В эфире?" -->
           <th>В эфире?</th>
+          <th>Количество текущих трансляций</th>
           <th>Действия</th>
         </tr>
       </thead>
@@ -30,6 +31,7 @@
               <span class="text-danger">Нет</span>
             {% endif %}
           </td>
+          <td>{{ channel.current_streams_count }}</td>  <!-- Добавили -->
           <td>
             <form method="POST" action="{% url 'delete_channel' channel.id %}" style="display:inline;">
               {% csrf_token %}

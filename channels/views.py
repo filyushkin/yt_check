@@ -8,6 +8,9 @@ import os
 from bs4 import BeautifulSoup
 import googleapiclient.discovery
 from .utils import check_stream_is_live
+from django.views.decorators.http import require_POST
+from django.core.cache import cache
+from django.shortcuts import render
 
 # load_dotenv()
 # api_key = os.getenv('YOUTUBE_API_KEY')
@@ -86,6 +89,7 @@ def check_stream_status(request):
 def channels_list(request):
     channels = Channel.objects.all()
     return render(request, 'channels/channels_list.html', {'channels': channels})
+    # return render(request, 'channels_list.html', {'channels': channels})
 
 def delete_channel(request, channel_id):
     if request.method == 'POST':
@@ -98,3 +102,4 @@ def tasks(request):
 
 def files(request):
     return render(request, 'channels/files.html')
+

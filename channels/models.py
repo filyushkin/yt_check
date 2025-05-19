@@ -9,6 +9,7 @@ class Channel(models.Model):
     name = models.CharField(max_length=255)  # Имя канала
     url = models.URLField()  # Ссылка на канал
     is_live = models.BooleanField(default=False)  # Добавьте поле для статуса эфира
+    current_streams_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.pseudonym

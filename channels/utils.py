@@ -1,6 +1,8 @@
 import requests
 import os
 from dotenv import load_dotenv
+import re
+import requests
 
 load_dotenv()
 
@@ -25,9 +27,9 @@ def get_channel_id(pseudonym):
 
     return None
 
-
+"""
 def check_stream_is_live(pseudonym):
-    """Проверка, идет ли трансляция на канале"""
+    # Проверка, идет ли трансляция на канале
     channel_id = get_channel_id(pseudonym)
     if not channel_id:
         return False
@@ -47,3 +49,12 @@ def check_stream_is_live(pseudonym):
         pass
 
     return False
+"""
+
+# Парсинг страницы канала (только для публичных данных)
+
+def check_stream_is_live(pseudonym):
+    url = f"https://www.youtube.com/@{pseudonym}/live"
+    html = requests.get(url).text
+    return '"isLive":true' in html
+
