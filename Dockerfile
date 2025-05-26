@@ -7,10 +7,10 @@ WORKDIR /app
 COPY uv.lock .
 COPY pyproject.toml .
 
-RUN uv sync
-
 # Копирование проекта
 COPY . .
+
+RUN uv sync
 
 # Команда для запуска, будет переопределена в docker-compose
 CMD ["uv", "run", "manage.py", "runserver", "0.0.0.0:8000"]

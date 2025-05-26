@@ -46,3 +46,17 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - CELERY_BROKER_URL=redis://redis:6379/0
+  flower:
+    build: .
+    command: uv run celery -A yt_check flower --port=5555
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+    volumes:
+      - .:/app
+      - /app/.venv
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CELERY_BROKER_URL=redis://redis:6379/0
