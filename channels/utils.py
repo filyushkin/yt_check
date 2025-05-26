@@ -9,7 +9,7 @@ YT_API_KEY = os.getenv('YOUTUBE_API_KEY')
 
 def get_channel_id(pseudonym):
     """
-    Получение ID канала по @handle (псевдониму), используя YouTube Data API v3
+    Получение ID канала по @handle, используя YouTube Data API v3
     """
     if not pseudonym.startswith('@'):
         pseudonym = '@' + pseudonym
@@ -32,9 +32,16 @@ def check_stream_is_live(pseudonym):
     """
     Проверка, идет ли трансляция на канале, используя YouTube Data API v3
     """
+    return get_live_streams_count(pseudonym) > 0
+
+
+def get_live_streams_count(pseudonym):
+    """
+    Получение количества прямых трансляций на канале по псевдониму, используя YouTube Data API v3
+    """
     channel_id = get_channel_id(pseudonym)
     if not channel_id:
-        return False
+        return 0
 
     url = (
         'https://www.googleapis.com/youtube/v3/search'
@@ -45,8 +52,8 @@ def check_stream_is_live(pseudonym):
         response = requests.get(url)
         response.raise_for_status()
         data = response.json()
-        return bool(data.get('items'))
+        return len(data.get('items', []))
     except requests.RequestException as e:
         print("Ошибка запроса к YouTube API:", e)
 
-    return False
+    return 0
