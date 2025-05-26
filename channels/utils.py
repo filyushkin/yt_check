@@ -1,60 +1,52 @@
-import requests
 import os
-from dotenv import load_dotenv
-import re
 import requests
+from dotenv import load_dotenv
 
 load_dotenv()
 
 YT_API_KEY = os.getenv('YOUTUBE_API_KEY')
 
+
 def get_channel_id(pseudonym):
-    """Получение ID канала по @handle (псевдониму), используя YouTube API"""
+    """
+    Получение ID канала по @handle (псевдониму), используя YouTube Data API v3
+    """
     if not pseudonym.startswith('@'):
         pseudonym = '@' + pseudonym
 
-    api_key = YT_API_KEY
-    url = f'https://www.googleapis.com/youtube/v3/channels?part=id&forHandle={pseudonym[1:]}&key={api_key}'
+    url = f'https://www.googleapis.com/youtube/v3/channels?part=id&forHandle={pseudonym[1:]}&key={YT_API_KEY}'
 
     try:
         response = requests.get(url)
+        response.raise_for_status()
         data = response.json()
-
         if 'items' in data and len(data['items']) > 0:
             return data['items'][0]['id']
     except requests.RequestException as e:
-        print("Ошибка запроса:", e)
+        print("Ошибка запроса к YouTube API:", e)
 
     return None
 
-"""
+
 def check_stream_is_live(pseudonym):
-    # Проверка, идет ли трансляция на канале
+    """
+    Проверка, идет ли трансляция на канале, используя YouTube Data API v3
+    """
     channel_id = get_channel_id(pseudonym)
     if not channel_id:
         return False
 
-    # URL для поиска активных трансляций на канале
-    api_key = YT_API_KEY  # Вставьте ваш ключ API
-    url = f'https://www.googleapis.com/youtube/v3/search?part=snippet&channelId={channel_id}&eventType=live&type=video&key={api_key}'
+    url = (
+        'https://www.googleapis.com/youtube/v3/search'
+        f'?part=snippet&channelId={channel_id}&eventType=live&type=video&key={YT_API_KEY}'
+    )
 
     try:
         response = requests.get(url)
+        response.raise_for_status()
         data = response.json()
-
-        # Если есть элементы в ответе, значит стрим идет
-        if data.get('items'):
-            return True
-    except requests.RequestException:
-        pass
+        return bool(data.get('items'))
+    except requests.RequestException as e:
+        print("Ошибка запроса к YouTube API:", e)
 
     return False
-"""
-
-# Парсинг страницы канала (только для публичных данных)
-
-def check_stream_is_live(pseudonym):
-    url = f"https://www.youtube.com/@{pseudonym}/live"
-    html = requests.get(url).text
-    return '"isLive":true' in html
-
