@@ -17,10 +17,6 @@ app.autodiscover_tasks()
 # Расписание периодических задач
 app.conf.timezone = 'UTC'  # или 'Europe/Minsk' — если нужно локальное время
 app.conf.beat_schedule = {
-    'update-channels-live-status-every-5-minutes': {
-        'task': 'channels.tasks.update_channels_live_status',
-        'schedule': crontab(minute='*/5'),
-    },
     'update-channels-streams-count-every-5-minutes': {
         'task': 'channels.tasks.update_channels_streams_count',
         'schedule': crontab(minute='*/5'),

@@ -22,8 +22,9 @@ def update_channels_streams_count():
     for channel in Channel.objects.all():
         try:
             count = get_live_streams_count(channel.pseudonym)
-            logger.info('channel name %s, count %s', channel.name, count)
+            logger.info('Channel name %s, count %s', channel.name, count)
             channel.current_streams_count = count
-            channel.save(update_fields=["current_streams_count"])
+            channel.is_live = count > 0
+            channel.save(update_fields=["current_streams_count", "is_live"])
         except Exception as e:
             logger.error(f'Ошибка при обновлении количества трансляций канала {channel.name}: {e}')

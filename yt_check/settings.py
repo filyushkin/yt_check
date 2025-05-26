@@ -137,10 +137,6 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
 CELERY_BEAT_SCHEDULE = {
-    'update-channels-live-status-every-5-minutes': {
-        'task': 'channels.tasks.update_channels_live_status',
-        'schedule': crontab(minute='*/5'),
-    },
     'update-channels-streams-count-every-5-minutes': {
         'task': 'channels.tasks.update_channels_streams_count',
         'schedule': crontab(minute='*/5'),

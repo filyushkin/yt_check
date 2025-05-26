@@ -1,6 +1,11 @@
+import logging
 import os
 import requests
 from dotenv import load_dotenv
+from logging import getLogger
+
+logger = getLogger(__name__)
+logger.setLevel('INFO')
 
 load_dotenv()
 
@@ -23,7 +28,7 @@ def get_channel_id(pseudonym):
         if 'items' in data and len(data['items']) > 0:
             return data['items'][0]['id']
     except requests.RequestException as e:
-        print("Ошибка запроса к YouTube API:", e)
+        logger.error("Ошибка запроса к YouTube API:", e)
 
     return None
 
@@ -54,6 +59,6 @@ def get_live_streams_count(pseudonym):
         data = response.json()
         return len(data.get('items', []))
     except requests.RequestException as e:
-        print("Ошибка запроса к YouTube API:", e)
+        logger.error("Ошибка запроса к YouTube API:", e)
 
     return 0
